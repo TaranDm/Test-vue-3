@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ant-design-vue": "^3.2.15",
+    "moment": "^2.29.4",
     "pinia": "^2.0.32",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"

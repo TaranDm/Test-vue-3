@@ -1,47 +1,104 @@
 <template>
-    <h1>руддщ</h1>
-    <button @click="oSubmit">click</button>
-<div v-for="item in items">
-    {{item.name}}
-</div>
-    {{sorteredItems}}
+  <main>
+    <header class="header">
+      <img ref="headline" src="/vite.svg" class="header-logo" />
+      <h2>My favorit movies</h2>
+    </header>
+    <div class="tabs">
+      <button
+        :class="['btn', { btn_green: movieStore.activeTab === 1 }]"
+        @click="setTab(1)"
+      >
+        Favorite
+      </button>
+      <button
+        :class="['btn', { btn_green: movieStore.activeTab === 2 }]"
+        @click="setTab(2)"
+      >
+        Search
+      </button>
+    </div>
+    <div class="movies" v-if="movieStore.activeTab === 1">
+      <div>
+        <h3>Watched movies</h3>
+        count: {{ movieStore.watchMovies.length }}
+        <movie-component
+          v-for="item of movieStore.watchMovies"
+          :key="item.id"
+          :movie="item"
+        />
+      </div>
+
+      All movies count: {{ movieStore.totalCountMovies }}
+      <div>
+        <h3>All movies</h3>
+        <movie-component
+          v-for="item of movieStore.movies"
+          :key="item.id"
+          :movie="item"
+        />
+      </div>
+    </div>
+    <div class="search" v-else>
+      <Search />
+    </div>
+  </main>
 </template>
 
-<script>
-    import {ref, computed} from 'vue'
-    export default {
-        name: "Home",
-        setup(props, contex) {
-            const items = ref([
-                {
-                    id: 1,
-                name: 'ssas'
-                },
-                {
-                    id: 2,
-                    name: '1212'
-                }
-            ])
-            const oSubmit = ()=> {
-                contex.emit('onSubmit', 1)
-            }
-            const sorteredItems = computed(()=>{
-return 2
-            })
-            function handleSubmit(item) {
-                items.value.push(item)
+<script setup>
+import MovieComponent from "@/components/Movie.vue";
+import Search from "@/components/Search.vue";
+import { useStore } from "@/stores/Store.js";
+import { onBeforeMount, ref } from "vue";
 
-            }
-            return {
-                items,
-                handleSubmit,
-                oSubmit,
-                sorteredItems
-            }
-        }
-    }
+const headline = ref(null);
+const movieStore = useStore();
+const setTab = (id) => movieStore.setActiveTab(id);
+
+function onSubmit(val) {
+  console.log("val", val);
+}
+
+onBeforeMount(() => {
+  console.log("logoHeader", headline);
+});
 </script>
 
-<style scoped>
+<style lang="css">
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 
+.header-logo {
+  max-width: 50px;
+  margin-right: 10px;
+}
+
+.btn {
+  border: none;
+  width: 100px;
+  height: 40px;
+  font-size: 14px;
+  margin: 0 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #efefef;
+}
+
+.btn:hover {
+  opacity: 0.7;
+}
+
+.btn_green {
+  background: #37df5c;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
 </style>

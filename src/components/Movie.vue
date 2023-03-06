@@ -10,8 +10,7 @@
         {{ movie.original_title }} ({{ movie.release_date }})
       </div>
       <span class="movie-overview">{{ movie.overview }}</span>
-      <div class="movie-buttons">
-        {{ movie.id }}
+      <div class="movie-buttons" v-if="!isSearch">
         <button
           class="btn movie-buttons-watched"
           @click="movieStore.toggleWatched(movie.id)"
@@ -26,19 +25,34 @@
           Delete
         </button>
       </div>
+      <div class="movie-buttons" v-else>
+        <button
+          @click="searchStore.addToUserMovies(movie)"
+          class="btn btn_green"
+        >
+          Add
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { useStore } from "../stores/Store";
+import { useSearchStore } from "@/stores/SearchStore.js";
 
+const searchStore = useSearchStore();
 const movieStore = useStore();
 const props = defineProps({
   movie: {
     type: Object,
     required: true,
     default: () => {},
+  },
+  isSearch: {
+    type: Boolean,
+    required: false,
+    default: () => false,
   },
 });
 </script>
@@ -53,38 +67,46 @@ const props = defineProps({
   padding: 10px;
   border-radius: 10px;
 }
+
 .movie-accept {
   margin-right: 10px;
 }
+
 .movie-img {
   width: 200px;
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
 }
+
 .movie-name {
   display: flex;
   align-items: center;
   font-size: 20px;
   margin-bottom: 20px;
 }
+
 .movie-overview {
   display: block;
   margin-bottom: 20px;
 }
+
 .movie-buttons {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .movie-buttons-watched {
   color: #fff;
   background: #1eb4c3;
 }
+
 .movie-buttons-watched__icon {
   width: 15px;
   margin-left: 10px;
 }
+
 .movie-buttons-delete {
   color: #fff;
   background: #ff2a2a;

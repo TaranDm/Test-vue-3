@@ -1,27 +1,9 @@
 import { defineStore } from "pinia";
+import { ref, computed, watch } from "vue";
 export const useStore = defineStore("Store", {
   state: () => ({
-    movies: [
-      {
-        id: 1,
-        original_title: "Spider-Man",
-        overview:
-          "After being bitten by a genetically altered spider at Oscorp, nerdy but endearing high school student Peter Parker is endowed with amazing powers to become the superhero known as Spider-Man.",
-        poster_path: "/gh4cZbhZxyTbgxQPxD0dOudNPTn.jpg",
-        release_date: "2002-05-01",
-        isWatched: false,
-      },
-      {
-        id: 2,
-        original_title: "The Batman",
-        overview:
-          "In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.",
-        poster_path: "/b0PlSFdDwbyK0cf5RxwDpaOJQvQ.jpg",
-        release_date: "2022-03-01",
-        isWatched: true,
-      },
-    ],
-    activeTab: 1,
+    movies: [],
+    activeTab: 2,
   }),
   actions: {
     setActiveTab(id) {
@@ -36,11 +18,49 @@ export const useStore = defineStore("Store", {
     },
   },
   getters: {
-    watchMovies() {
-      return this.movies.filter((el) => el.isWatched);
+    watchMovies(state) {
+      return state.movies.filter((el) => el.isWatched);
     },
-    totalCountMovies() {
-      return this.movies.length;
+    totalCountMovies(state) {
+      return state.movies.length;
     },
   },
 });
+// export const useStore = defineStore("Store", () => {
+//   const movies = ref([]);
+//   const activeTab = ref(2);
+//   const moviesInLocalStorage = localStorage.getItem("movies");
+//   if (moviesInLocalStorage) {
+//     movies.value = JSON.parse(moviesInLocalStorage)._value;
+//   }
+//   //actions
+//   const setActiveTab = (id) => {
+//     activeTab.value = id;
+//   };
+//   const toggleWatched = (id) => {
+//     const idx = movies.value.findIndex((el) => el.id === id);
+//     movies.value[idx].isWatched = !movies.value[idx].isWatched;
+//   };
+//   const deleteMovie = (id) => {
+//     movies.value = movies.value.filter((el) => el.id !== id);
+//   };
+//   //getters
+//   const watchMovies = computed(() => movies.value.filter((el) => el.isWatched));
+//   const totalCountMovies = computed(() => movies.value.length);
+//   watch(
+//     () => movies,
+//     (state) => {
+//       localStorage.setItem("movies", JSON.stringify(state));
+//     },
+//     { deep: true }
+//   );
+//   return {
+//     movies,
+//     activeTab,
+//     setActiveTab,
+//     toggleWatched,
+//     deleteMovie,
+//     watchMovies,
+//     totalCountMovies,
+//   };
+// });

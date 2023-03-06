@@ -1,9 +1,11 @@
+import { module } from "node:path";
+
 module.exports = {
   root: true,
   env: {
     node: true,
   },
-  extends: ["plugin:vue/essential", "eslint:recommended", "@vue/prettier"],
+  extends: ["airbnb-base", "prettier"],
   parserOptions: {
     parser: "babel-eslint",
   },
@@ -14,13 +16,19 @@ module.exports = {
     "vue/no-useless-template-attributes": "off",
     "vue/multi-word-component-names": "off",
     "vue/no-reserved-component-names": "off",
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "prettier/prettier": [
-      "off",
+      "error",
       {
-        endOfLine: "auto",
+        tabWidth: 4,
+        printWidth: 100,
+        singleQuote: true,
+        trailingComma: "es5",
       },
     ],
   },
 };
+// {
+//   printWidth: 100,
+//       singleQuote: true,
+//     trailingComma: "es5",
+// },
